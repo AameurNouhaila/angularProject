@@ -36,15 +36,15 @@ export class AddAbsenceComponent implements OnInit{
     })
   }
   public getAbsences(): void {
-    this.absensesService.getAbsences().subscribe(
-      (response: Absence[]) => {
+    this.absensesService.getAbsences().subscribe({
+      next: (response: Absence[]) => {
         this.absences = response;
         console.log(this.absences);
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    );
+    });
   }
 
   onSubmitAbsenceForm(): void {
@@ -58,7 +58,7 @@ export class AddAbsenceComponent implements OnInit{
           this.absensesService.getAbsences();
         },
         error: (error: HttpErrorResponse) => {
-          alert(error.message);
+          alert(error.message); 
         }
       });
     } else {

@@ -1,7 +1,7 @@
 export interface Absence {
     id: number;
-    date_debut: Date;
-    date_fin: Date;
+    date_debut: string;
+    date_fin: string;
     nombre_jours: number;
     status: string;
     colab_id: string;
