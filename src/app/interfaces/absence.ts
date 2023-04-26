@@ -5,5 +5,5 @@ export interface Absence {
     nombre_jours: number;
     status: string;
     colab_id: string;
-    document_id: string;
+    document_id: any;
 }

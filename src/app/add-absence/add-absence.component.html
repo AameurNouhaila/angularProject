@@ -40,7 +40,7 @@
                     </div>
                 
                     <div class="d-flex">
-                        <button class="btn btn-success mx-auto" type="submit" [disabled]="absenceForm.invalid">Enregistrer</button>
+                        <button class="btn btn-primary w-100 mx-auto" type="submit" [disabled]="absenceForm.invalid">Enregistrer</button>
                     </div>
                 </form>
             </div>
@@ -50,47 +50,44 @@
     
 
 <!--Liste des absences-->
-    <div class="row">
-        <div class="col-12 col-lg-8 mx-auto">
-            <div class="bg-white shadow p-4 rounded">
-                <h1 class="display-6 text-dark">Liste des absences maladie</h1>
-                <hr class="bg-dark mb-5">
+<div class="row">
+  <div class="col-12 col-lg-8 mx-auto">
+      <div class="bg-white shadow p-4 rounded">
+          <h1 class="display-6 text-dark">Liste des absences maladie</h1>
+          <hr class="bg-dark mb-5">
 
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">dateDebut</th>
-                        <th scope="col">dateFin</th>
-                        <th scope="col">nombreJours</th>
-                    
-                        <th scope="col">certificat</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let absence of absences; let i = index">
-                        <th>{{ i }}</th>
-                        <td>{{ absence.date_debut }}</td>
-                        <td>{{ absence.date_fin }}</td>
-                        <td>{{ absence.nombre_jours }}</td>
-                        
-                        <td>
-                          <!--  <a *ngIf="absence.certificat" href="#" (click)="downloadPdf(absence.certificat)">Télécharger le certificat</a>
-                            <span *ngIf="!absence.certificat">Pas de certificat</span>
-                          </td>--> 
-                        <td>
-                            <button class="btn btn-primary" type="button" (click)="onEditAbsence(absence, i)">Modifier</button>
-                           <!--  <button class="btn btn-danger" type="button" (click)="onDeleteAbsence(i)">Supprimer</button> -->
-                        </td>
-                      </tr>
-                     
-                    </tbody>
-                  </table>
-            </div>
-        </div>
-    </div>
-
-
+          <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Date Debut</th>
+                  <th scope="col">Date Fin</th>
+                  <th scope="col">Nombre Jours</th>
+              
+                  <th scope="col">Certificat Maladie</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let absence of absences; let i = index">
+                  <th>{{ i }}</th>
+                  <td>{{ absence.date_debut }}</td>
+                  <td>{{ absence.date_fin }}</td>
+                  <td>{{ absence.nombre_jours }}</td>
+                  
+                  <td>
+                    <a *ngIf="absence.document_id" href="#" (click)="downloadPdf(absence.document_id)">Télécharger le certificat</a>
+                      <span *ngIf="!absence.document_id">Pas de certificat</span>
+                    </td>
+                  <td>
+                      
+                      <button class="btn btn-danger" type="button" (click)="onDeleteAbsence(i)">Supprimer</button> 
+                  </td>
+                </tr>
+               
+              </tbody>
+            </table>
+      </div>
   </div>
+</div>
 

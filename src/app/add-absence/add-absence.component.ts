@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import jsPDF from 'jspdf';
 import { Absence } from '../interfaces/absence';
-import { AbsencesService } from '../services/absences.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-absence',
@@ -20,7 +19,8 @@ export class AddAbsenceComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private absensesService: AbsencesService
+    private route:Router
+   // private absensesService: AbsencesService
   ){}
 
   ngOnInit():void {
@@ -28,23 +28,12 @@ export class AddAbsenceComponent implements OnInit{
   }
   initAbsenceForm(): void {
     this.absenceForm = this.formBuilder.group({
-      index: [null],
+      index: [0],
       date_debut: [],
       date_fin: [],
       nombre_jours: 0,
-      document_id: ''
+      document_id: []
     })
-  }
-  public getAbsences(): void {
-    this.absensesService.getAbsences().subscribe({
-      next: (response: Absence[]) => {
-        this.absences = response;
-        console.log(this.absences);
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    });
   }
 
   onSubmitAbsenceForm(): void {
@@ -52,43 +41,41 @@ export class AddAbsenceComponent implements OnInit{
     let absence = this.absenceForm.value;
     if (absenceIndex == null || absenceIndex == undefined) {
       delete absence.index;
-      this.absensesService.createAbsence(absence).subscribe({
-        next: (response: Absence) => {
-          console.log(response);
-          this.absensesService.getAbsences();
-        },
-        error: (error: HttpErrorResponse) => {
-          alert(error.message); 
-        }
-      });
+      this.absences.push(absence);
     } else {
       delete absence.index;
-      this.absences = this.absensesService.editAbsence(absence, absenceIndex);
+      this.absences[absenceIndex] = absence;
     }
     this.absenceForm.reset();
+    console.log(this.absences);
+    alert("Les données ont été enregistrées avec succès !");
+    
   }
+  
   
 
   onChangeAbsenceCertificat($event: any): void {
     this.currentAbsenceCertificatFile = $event.target.files[0];
-    console.log(this.currentAbsenceCertificatFile);
   }
+
 //not used
-  downloadPdf(certificat: any) {
-    const doc = new jsPDF();
-    doc.text(certificat, 10, 10);
-    doc.save('certificat.pdf');
-  }
+ 
+downloadPdf(certificat: any) {
+  const doc = new jsPDF();
+  doc.text(certificat, 10, 10);
+  doc.save('certificat.pdf');
+}
 
 
+
+//not used
+onDeleteAbsence(index: number): void {
+const isSure = confirm("Êtes-vous sûr de vouloir supprimer cette absence ?");
+if (isSure) {
+  this.absences.splice(index, 1);
+}
+}
   
 
-  onEditAbsence(absence: Absence, index: number): void {
-    this.absenceForm.setValue({...absence, index});
-  }
-//not used
-  onDeleteAbsence(index: number): void {
-    this.absences = this.absensesService.deleteAbsence(index);
-  }
-
+ 
 }
